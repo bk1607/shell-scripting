@@ -1,4 +1,4 @@
-log_file="/var/log/roboshop.log"
+log_file=/var/log/roboshop.log
 export log_file
 error_check() {
   if [ $? -lt 1 ];then
