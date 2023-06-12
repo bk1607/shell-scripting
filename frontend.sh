@@ -4,7 +4,7 @@ yum install nginx -y &> "$log_file"
 error_check
 
 echo -e "\e[33mRemoving default content\e[0m"
-rm -rf  &> "$log_file"
+rm -rf /usr/share/nginx/html/*  &> "$log_file"
 error_check
 
 echo -e "\e[33mDownloading frontend content\e[0m"
