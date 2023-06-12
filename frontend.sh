@@ -1,2 +1,2 @@
-echo -e "\[31m installing nginx \[0m"
+echo -e "\e[31m installing nginx \e[0m"
 yum install nginx -y
