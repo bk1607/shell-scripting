@@ -25,4 +25,4 @@ systemctl enable nginx &> "${log_file}"
 systemctl restart nginx &> "${log_file}"
 error_check
 
-echo "log file: '$log_file'"
+echo "log file: $log_file"
