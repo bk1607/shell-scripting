@@ -17,7 +17,7 @@ unzip /tmp/frontend.zip &>> "${log_file}"
 error_check
 
 print_head "Reverse proxy configuration"
-cp ${code_dir}/roboshop.conf /etc/nginx/default.d/roboshop.conf &>> "${log_file}"
+cp ${code_dir}/configs/roboshop.conf /etc/nginx/default.d/roboshop.conf &>> "${log_file}"
 error_check
 
 print_head "Enable and restart nginx service"
