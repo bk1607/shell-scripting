@@ -29,7 +29,10 @@ app_setup(){
 
   print_head "download application directory"
   curl -L -o /tmp/"${component}".zip https://roboshop-artifacts.s3.amazonaws.com/"${component}".zip &>> "${log_file}"
+  error_check
   cd /app
+
+  print_head "Extracting content"
   unzip /tmp/"${component}".zip &>> "${log_file}"
   error_check
 
