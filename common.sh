@@ -28,9 +28,9 @@ app_setup(){
   error_check
 
   print_head "download application directory"
-  curl -L -o /tmp/"{$component}".zip https://roboshop-artifacts.s3.amazonaws.com/"${component}".zip &>> "${log_file}"
+  curl -L -o /tmp/"${component}".zip https://roboshop-artifacts.s3.amazonaws.com/"${component}".zip &>> "${log_file}"
   cd /app
-  unzip /tmp/"{$component}".zip &>> "$log_file"
+  unzip /tmp/"${component}".zip &>> "${log_file}"
   error_check
 
   print_head "Download dependencies"
