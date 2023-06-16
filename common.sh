@@ -22,7 +22,7 @@ app_setup(){
   error_check
 
   print_head "Create app directory"
-  if ! mkdir /app >/dev/null 2>&1; then
+  if [ ! -d /app ]; then
     mkdir /app
   fi
   error_check
@@ -67,7 +67,7 @@ schema_setup(){
   error_check
 
   print_head "Load schema"
-  mongo --host MONGODB-SERVER-IPADDRESS </app/schema/catalogue.js &>> "${log_file}"
+  mongo --host 54.234.246.159 </app/schema/catalogue.js &>> "${log_file}"
   error_check
 
 }
