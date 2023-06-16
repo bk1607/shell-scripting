@@ -24,6 +24,8 @@ app_setup(){
   print_head "Create app directory"
   if [ ! -d /app ]; then
     mkdir /app
+  elif [ -d /app ]; then
+    rm -rf /app/* &>> "${log_file}"
   fi
   error_check
 
