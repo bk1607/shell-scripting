@@ -9,7 +9,7 @@ region="us-west-1"
 
 # Spot instance details
 instance_type="t2.micro"
-ami_id="ami-0bb6af715826253bf"
+ami_id="ami-03265a0778a880afb"
 security_group_id="sg-068a20157a2378db8"
 
 # Route 53 details
@@ -32,7 +32,7 @@ for user in "${users[@]}"; do
 
 
     # Create Route 53 record
-    record_name="$user.example.com"
+    record_name="${user}.devops2023.online"
 
     aws route53 change-resource-record-sets \
         --region "$region" \
