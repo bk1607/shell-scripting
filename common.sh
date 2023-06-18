@@ -38,10 +38,6 @@ app_setup(){
   unzip /tmp/"${component}".zip &>> "${log_file}"
   error_check
 
-  print_head "Download dependencies"
-  cd /app
-  npm install &>> "$log_file"
-  error_check
 
 }
 
@@ -62,18 +58,31 @@ systemd_setup(){
 }
 
 schema_setup(){
+  if [ "$schema" == "mongodb" ]; then
+    print_head "Setup Mongodb repo file"
+    cp "${code_dir}"/configs/mongodb.repo /etc/yum.repos.d/mongo.repo &>> "${log_file}"
+    error_check
 
-  print_head "Setup Mongodb repo file"
-  cp "${code_dir}"/configs/mongodb.repo /etc/yum.repos.d/mongo.repo &>> "${log_file}"
-  error_check
+    print_head "Installing mongodb"
+    yum install mongodb-org-shell -y &>> "${log_file}"
+    error_check
 
-  print_head "Installing mongodb"
-  yum install mongodb-org-shell -y &>> "${log_file}"
-  error_check
+    print_head "Load schema"
+    mongo --host 54.234.246.159 </app/schema/catalogue.js &>> "${log_file}"
+    error_check
+  elif [ "$schema" == "mysql" ];then
+    print_head "install mysql"
+    yum install mysql -y &>> "${log_file}"
+    error_check
 
-  print_head "Load schema"
-  mongo --host 54.234.246.159 </app/schema/catalogue.js &>> "${log_file}"
-  error_check
+    print_head "Load schema"
+    mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p"${mysql_pass}" < /app/schema/"${component}".sql &>> "${log_file}"
+    error_check
+
+    print_head "restart service"
+    systemctl restart "${component}"
+    error_check
+
 
 }
 
@@ -89,8 +98,69 @@ nodejs() {
 
   app_setup
 
+  print_head "Download dependencies"
+  cd /app
+  npm install &>> "$log_file"
+  error_check
+
   systemd_setup
 
   schema_setup
+
+}
+
+python(){
+  print_head "Install python 3.6"
+  yum install python36 gcc python3-devel -y &>> "${log_file}"
+  error_check
+
+  app_setup
+
+  print_head "Download dependencies"
+  cd /app
+  pip3.6 install -r requirements.txt &>> "${log_file}"
+  error_check
+
+  systemd_setup
+
+
+
+}
+
+golang(){
+  print_head "Install golang"
+  yum install golang -y &>> "${log_file}"
+  error_check
+
+  app_setup
+
+  print_head "Download dependencies"
+  cd /app
+  go mod init dispatch &>> "${log_file}"
+  go get &>> "${log_file}"
+  go build &>> "${log_file}"
+  error_check
+
+  systemd_setup
+
+}
+
+maven(){
+  print_head "Install maven"
+  yum install maven -y &>> "${log_file}"
+  error_check
+
+  app_setup
+
+  print_head "Download dependencies"
+  cd /app
+  mvn clean package &>> "${log_file}"
+  mv target/shipping-1.0.jar shipping.jar &>> "${log_file}"
+  error_check
+
+  systemd_setup
+
+  schema_setup
+
 
 }

@@ -1,5 +1,4 @@
 source common.sh
-component=catalogue
+component=user
 schema=mongodb
 nodejs
-
