@@ -5,7 +5,7 @@
 users=("frontend" "mongodb" "catalogue")
 
 # AWS region
-region="us-west-1"
+region="us-east-1"
 
 # Spot instance details
 instance_type="t2.micro"
