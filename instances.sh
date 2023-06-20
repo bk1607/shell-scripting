@@ -29,42 +29,4 @@ for user in "${users[@]}"; do
         }" | jq -r ".SpotInstanceRequests[0].InstanceId")
 
 
-
-    # Wait for instance to be running
-    aws ec2 wait instance-running --instance-ids "$instance_id" --region "$region"
-
-    # Get instance IP address
-    instance_ip=$(aws ec2 describe-instances \
-        --instance-ids "$instance_id" \
-        --query "Reservations[0].Instances[0].PublicIpAddress" \
-        --region "$region" \
-        --output text)
-
-    # Check if instance IP is available
-    if [[ -n "$instance_ip" ]]; then
-        # Create Route 53 record
-        record_name="$user.devops2023.online"
-
-        aws route53 change-resource-record-sets \
-            --region "$region" \
-            --hosted-zone-id "$hosted_zone_id" \
-            --change-batch "{
-                \"Changes\": [
-                    {
-                        \"Action\": \"UPSERT\",
-                        \"ResourceRecordSet\": {
-                            \"Name\": \"$record_name\",
-                            \"Type\": \"$record_type\",
-                            \"TTL\": $record_ttl,
-                            \"ResourceRecords\": [
-                                {
-                                    \"Value\": \"$instance_ip\"
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }"
-
-    fi
 done
